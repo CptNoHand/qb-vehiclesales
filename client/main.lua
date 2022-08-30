@@ -318,17 +318,13 @@ RegisterNetEvent('qb-vehiclesales:client:SellVehicle', function()
     local VehiclePlate = QBCore.Functions.GetPlate(GetVehiclePedIsIn(PlayerPedId()))
     QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned, balance)
         if owned then
-            if balance < 1 then
-                QBCore.Functions.TriggerCallback('qb-occasions:server:getVehicles', function(vehicles)
-                    if vehicles == nil or #vehicles < #Config.Zones[Zone].VehicleSpots then
-                        openSellContract(true)
-                    else
-                        QBCore.Functions.Notify(Lang:t('error.no_space_on_lot'), 'error', 3500)
-                    end
-                end)
-            else
-                QBCore.Functions.Notify(Lang:t('error.finish_payments'), 'error', 3500)
-            end
+            QBCore.Functions.TriggerCallback('qb-occasions:server:getVehicles', function(vehicles)
+                if vehicles == nil or #vehicles < #Config.Zones[Zone].VehicleSpots then
+                    openSellContract(true)
+                else
+                    QBCore.Functions.Notify(Lang:t('error.no_space_on_lot'), 'error', 3500)
+                end
+            end)
         else
             QBCore.Functions.Notify(Lang:t('error.not_your_vehicle'), 'error', 3500)
         end
